@@ -1,0 +1,45 @@
+workspace('magento2-sample'):
+  description: generated local workspace for magento2-sample.
+  harness: inviqa/magento2:v0.2.7
+  overlay: tools/workspace
+
+key('default'): 1f3fd5ca44b1a1c34e8d4bc4798d77ed97aa9167d2556218f63b27ae6b5eb0bf
+
+attribute('aws.bucket'): inviqa-assets-magento2-sample
+attribute('app.repository'): null
+attribute('php.version'): 7.2
+
+attribute('backend.init.steps'):
+  - run "magento setup:upgrade"
+  - run "magento config:set 'web/unsecure/base_url'       'https://${APP_HOST}/'"
+  - run "magento config:set 'web/secure/base_url'         'https://${APP_HOST}/'"
+  - run "magento config:set 'web/secure/use_in_frontend'  '1'"
+  - run "magento config:set 'web/secure/use_in_adminhtml' '1'"
+  - run "magento config:set 'web/seo/use_rewrites'        '1'"
+
+attribute('aws.id'): = decrypt("YTozOntpOjA7czo3OiJkZWZhdWx0IjtpOjE7czoyNDoi2/hTZek9qf5dpgQaGCPU0ru7+A+5WsSDIjtpOjI7czozNjoiOd8Cy2iG8uFKkA730PIxSrP94TW8khPA4NPp/qwj0TJqRtleIjt9")
+attribute('aws.key'): = decrypt("YTozOntpOjA7czo3OiJkZWZhdWx0IjtpOjE7czoyNDoifjcJa7US6G/AD/zUASMtd5qXzrcr3+BLIjtpOjI7czo1Njoie8M30r8JynzL7/lh5xmwquIfv8chekB8vF2Zo5G6feWIMsG/N9Jn9E6jBETH7zxGm1dakXQg25EiO30=")
+attribute('magento.username'): = decrypt("YTozOntpOjA7czo3OiJkZWZhdWx0IjtpOjE7czoyNDoiDCaoEZAMA7goAlYm82LEUcemnRcqTWiLIjtpOjI7czo0ODoiOJKHBza25LO0mKZjyAcaj84PQcrtNRPiyRBz0Gi60/sOPZJvdHdy7jrGYmE7incoIjt9")
+attribute('magento.password'): = decrypt("YTozOntpOjA7czo3OiJkZWZhdWx0IjtpOjE7czoyNDoitVm7tDtK7cFYVreLgIioQ1cexT49ZSkeIjtpOjI7czo0ODoi6JMnVlB/IxaewBfLIQwd70fT3Pm12ZpqmQOcks/wQeq3HI7TDgEib2NjO/xtjF9SIjt9")
+attribute('magento.crypt.key'): = decrypt("YTozOntpOjA7czo3OiJkZWZhdWx0IjtpOjE7czoyNDoiFJIKMbXryHBnm20RwJTFKx2gbCAy9/nSIjtpOjI7czo0ODoixRYOLhGpph4YaW6nFgOC3TG6vp7RLD+ZMXl+9nNpxtS14FbXeEJ+i6SsesATlyHWIjt9")
+
+attributes:
+  app:
+    web_writable_files:
+    - '/app/app/etc/env.php'
+  docker:
+    repository: quay.io/inviqa_images/consultancy
+    username: inviqa_images+consultancy
+    password: = decrypt('YTozOntpOjA7czo3OiJkZWZhdWx0IjtpOjE7czoyNDoiwHot0vgFR5+R5gFv9CzVdE4Mtk72YcmqIjtpOjI7czo4MDoiVNhKmx3CDr93lZ26f0qjU5//sm5d4N3Qap4kEPlMshQu6hY41DqUhfy/AUAJ1htajYx/+bDS1KMSid4VAflBunKFrqmnjg1g9WtbMraTgcsiO30=')
+    config: = decrypt('YTozOntpOjA7czo3OiJkZWZhdWx0IjtpOjE7czoyNDoi1gZQBufoxbF0Cl9xbSfEl8H9AP5PXC2PIjtpOjI7czozNDQ6Indfq+wHqdw5KyxiNr9ZTtavk6BhiZUneaM1CwrTvI8PkWOWp4fIs4Frfxly68SaAN4TnMJxy9O8+AQrh2FHl8NIxK9Q+qgXnwa4gOQYtMMo+hArC7AMcxe6CmdhnTtaNDi29Ip2WB1ZMUEJQPB/XfRqSRUPCW9UahFMWmJfNQJiK+RxLs+KbKXVkZu2zhVPeOJPzD0iNLAts5Jx0fTWKeeLodUtBN/+y4BC9okvBkmBZHTBzj6BFQBzaOKuuGLQ8DYkoDmKgQiBDx2y4hAsh+m9npfVONE1n8X/Ea+IBmTfDYTjNkUFEuxTkjdGfeDufHuVzWlARFgKz/BmN8LF3d1LfGy6rzTtHpqHm3uYg86oZdKmQSDKt+XlrKLMAJfgXXw91XugGa8bUSN3d4ZiRTLtboJwZzx0duGueDfOQ9xcFJr5drvOBGcAlkkU9O/QAq3FWuob8StKIjt9')
+  pipeline:
+    publish:
+      enabled: yes
+    qa:
+      enabled:   yes
+      namespace: m2ee
+      hostname:  m2ee.consultancy.webpipeline.net
+      environment:
+        DO_ACCESS_TOKEN: credentials('inviqa-digitalocean-token')
+      cluster:
+        name: inviqa-consultancy

@@ -1,0 +1,26 @@
+#!/bin/bash
+
+function task_build()
+{
+    if [ ! -f /app/composer.json ]; then
+        task "skeleton:apply"
+    fi
+
+    task "overlay:apply"
+    
+    task "build:backend"
+    task "build:frontend"
+
+{% if @('app.build') == 'static' %}
+    mv app/etc/env.php           app/etc/env.php.bak
+    mv app/etc/config.php        app/etc/config.php.bak
+    cp app/etc/config/build.php  app/etc/config.php
+
+    passthru "magento setup:di:compile"
+    passthru "magento setup:static-content:deploy -f"
+    
+    mv app/etc/env.php.bak     app/etc/env.php
+    mv app/etc/config.php.bak  app/etc/config.php
+{% endif %}
+
+}
