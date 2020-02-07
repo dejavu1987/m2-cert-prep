@@ -1,6 +1,6 @@
 
 # Directories
-
+/.unison.*
 /.docker-sync
 /.my127ws
 /.github/
